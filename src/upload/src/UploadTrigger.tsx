@@ -14,12 +14,24 @@ export default defineComponent({
         'upload-trigger',
         `'upload-trigger' must be placed inside 'upload'.`
       )
-    const { mergedClsPrefixRef } = uploadInjection
-    return { mergedClsPrefix: mergedClsPrefixRef }
+    const { mergedClsPrefixRef, mergedDisabledRef } = uploadInjection
+    return {
+      mergedClsPrefix: mergedClsPrefixRef,
+      mergedDisabled: mergedDisabledRef
+    }
   },
   render() {
     const { mergedClsPrefix, $slots } = this
     if (this.abstract) return $slots.default?.()
-    return <div class={[`${mergedClsPrefix}-upload-trigger`]}>{$slots}</div>
+    return (
+      <div
+        class={[
+          `${mergedClsPrefix}-upload-trigger`,
+          this.mergedDisabled && `${mergedClsPrefix}-upload-trigger--disabled`
+        ]}
+      >
+        {$slots}
+      </div>
+    )
   }
 })

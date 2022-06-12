@@ -16,10 +16,17 @@ import {
   MaybeArray,
   resolveWrappedSlot,
   createPressedColor,
-  colorToClass
+  colorToClass,
+  isSlotEmpty,
+  resolveSlot
 } from '../../_utils'
 import { buttonLight, ButtonTheme } from '../styles'
-import { BaseWaveRef, BaseWave } from '../../_internal'
+import {
+  BaseWaveRef,
+  BaseWave,
+  FadeInExpandTransition,
+  BaseLoading
+} from '../../_internal'
 import { useMemo } from 'vooks'
 import style from './styles/index.cssr'
 
@@ -305,10 +312,10 @@ export default defineComponent({
     }
   },
   render() {
-    const { mergedClsPrefix } = this
+    const { mergedClsPrefix, $slots } = this
     this.onRender?.()
     const children = resolveWrappedSlot(
-      this.$slots.default,
+      $slots.default,
       (children) =>
         children && (
           <span class={`${mergedClsPrefix}-button__content`}>{children}</span>
@@ -344,7 +351,35 @@ export default defineComponent({
         onMousedown={this.handleMousedown}
       >
         {this.iconPlacement === 'right' && children}
-        {}
+        <FadeInExpandTransition width>
+          {resolveWrappedSlot(
+            $slots.icon,
+            (children) =>
+              (this.loading || children) && (
+                <span
+                  class={`${mergedClsPrefix}-button__icon`}
+                  style={children ? 'marigin: 0' : undefined}
+                >
+                  {this.loading ? (
+                    <BaseLoading
+                      clsPrefix={mergedClsPrefix}
+                      key="loading"
+                      strokeWidth={20}
+                      class={`${mergedClsPrefix}-icon-slot`}
+                    />
+                  ) : (
+                    <div
+                      key="icon"
+                      role="bone"
+                      class={`${mergedClsPrefix}-icon-slot`}
+                    >
+                      {children}
+                    </div>
+                  )}
+                </span>
+              )
+          )}
+        </FadeInExpandTransition>
         {this.iconPlacement === 'left' && children}
         {!this.text && <BaseWave clsPrefix={mergedClsPrefix} ref="waveElRef" />}
         {this.showBorder && (

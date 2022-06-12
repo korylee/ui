@@ -1,4 +1,4 @@
-import {
+import type {
   CreateThumbnailUrl,
   CustomRequest,
   FileAndEntry,
@@ -15,10 +15,10 @@ import {
   OnUpdateFileList,
   SettledFileInfo,
   DoChange,
-  UploadInternalInst,
-  uploadInjectionKey
+  UploadInternalInst
 } from './interface'
 
+import { uploadInjectionKey } from './interface'
 import {
   ExtractPublicPropTypes,
   throwError,
@@ -39,9 +39,7 @@ import {
   nextTick,
   provide
 } from 'vue'
-import useTheme, { ThemeProps } from '../../_hooks/use-theme'
-import { UploadTheme } from '../styles/light'
-import useConfig from '../../_hooks/use-config'
+import { uploadLight, UploadTheme } from '../styles'
 import {
   appendData,
   createSettledFileInfo,
@@ -51,6 +49,8 @@ import {
 import { useMergedState } from 'vooks'
 import { createId } from 'seemly'
 import UploadTrigger from './UploadTrigger'
+import { useFormItem, useConfig, useTheme, ThemeProps } from '../../_hooks'
+import UploadFileList from './UploadFileList'
 
 interface CustomSubmitImplOptions {
   inst: Omit<UploadInternalInst, 'isErrorState'>
@@ -286,12 +286,26 @@ export default defineComponent({
     const mergedFileListRef = computed(() =>
       _mergedFileListRef.value.map(createSettledFileInfo)
     )
-
     const mergedMultipleRef = computed(() => props.multiple || props.directory)
-
+    const formItem = useFormItem(props)
+    const themeRef = useTheme(
+      'Upload',
+      'upload',
+      undefined,
+      uploadLight,
+      props,
+      mergedClsPrefixRef
+    )
     const cssVarsRef = computed((): CSSProperties => {
       return {}
     })
+
+    async function getFileThumbnailUrl(fileInfo: FileInfo) {
+      const { createThumbnailUrl } = props
+      const { file } = fileInfo
+      if (!file) return
+      if (createThumbnailUrl) return await createThumbnailUrl(file)
+    }
 
     async function handleFileAddition(
       fileAndEntries: FileAndEntry[] | null,
@@ -391,43 +405,43 @@ export default defineComponent({
       const showReupload = fileId !== undefined
       filesToUpload.forEach((file) => {
         const { status } = file
-        if (status === 'pending' || (status === 'error' && showReupload)) {
-          if (customRequest) {
-            customSubmitImpl({
-              inst: {
-                doChange,
-                xhrMap,
-                onFinish,
-                onError
-              },
-              file,
-              action,
-              withCredentials,
-              headers,
-              data,
-              customRequest
-            })
-          } else {
-            submitImpl(
-              {
-                doChange,
-                xhrMap,
-                onFinish,
-                onError,
-                isErrorState
-              },
-              filename,
-              file,
-              {
-                method,
-                action,
-                withCredentials,
-                headers,
-                data
-              }
-            )
-          }
+        if (!(status === 'pending' || (status === 'error' && showReupload))) {
+          return
         }
+        if (customRequest) {
+          return customSubmitImpl({
+            inst: {
+              doChange,
+              xhrMap,
+              onFinish,
+              onError
+            },
+            file,
+            action,
+            withCredentials,
+            headers,
+            data,
+            customRequest
+          })
+        }
+        submitImpl(
+          {
+            doChange,
+            xhrMap,
+            onFinish,
+            onError,
+            isErrorState
+          },
+          filename,
+          file,
+          {
+            method,
+            action,
+            withCredentials,
+            headers,
+            data
+          }
+        )
       })
     }
 
@@ -441,8 +455,6 @@ export default defineComponent({
             source: 'input'
           }))
         : null
-      console.log(entries)
-
       handleFileAddition(entries, e)
       target.value = ''
     }
@@ -455,7 +467,9 @@ export default defineComponent({
     }
 
     provide(uploadInjectionKey, {
-      mergedClsPrefixRef
+      mergedClsPrefixRef,
+      mergedDisabledRef: formItem.mergedDisabledRef,
+      mergedThemeRef: themeRef
     })
 
     return {
@@ -498,6 +512,7 @@ export default defineComponent({
         {this.showTrigger && this.listType !== 'image-card' && (
           <UploadTrigger>{$slots}</UploadTrigger>
         )}
+        {this.showFileList && <UploadFileList>{$slots}</UploadFileList>}
       </div>
     )
   }

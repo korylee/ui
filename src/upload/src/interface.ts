@@ -1,5 +1,7 @@
-import { Ref } from "vue"
-import { createInjectionKey } from "../../_utils"
+import type { Ref } from 'vue'
+import type { MergedTheme } from '../../_hooks'
+import { createInjectionKey } from '../../_utils'
+import type { UploadTheme } from '../styles'
 
 export interface FileInfo {
   id: string
@@ -63,11 +65,14 @@ export interface UploadInternalInst {
 
 export type OnUpdateFileList = (fileList: SettledFileInfo[]) => void
 
-export interface UploadInjection{
+export interface UploadInjection {
   mergedClsPrefixRef: Ref<string>
+  mergedThemeRef: Ref<MergedTheme<UploadTheme>>
+  mergedDisabledRef: Ref<boolean>
 }
 
-export const uploadInjectionKey = createInjectionKey<UploadInjection>('k-upload')
+export const uploadInjectionKey =
+  createInjectionKey<UploadInjection>('k-upload')
 
 export type ListType = 'text' | 'image' | 'image-card'
 
