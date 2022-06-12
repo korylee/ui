@@ -1,7 +1,13 @@
 import type { ButtonSize, ButtonType } from './interface'
 
 import { computed, CSSProperties, defineComponent, h, PropType, ref } from 'vue'
-import { ThemeProps, useConfig, useTheme } from '../../_hooks'
+import {
+  ThemeProps,
+  useConfig,
+  useRtl,
+  useTheme,
+  useThemeClass
+} from '../../_hooks'
 import {
   call,
   createHoverColor,
@@ -9,7 +15,8 @@ import {
   ExtractPublicPropTypes,
   MaybeArray,
   resolveWrappedSlot,
-  createPressedColor
+  createPressedColor,
+  colorToClass
 } from '../../_utils'
 import { buttonLight, ButtonTheme } from '../styles'
 import { BaseWaveRef, BaseWave } from '../../_internal'
@@ -68,7 +75,8 @@ export default defineComponent({
   name: 'Button',
   props: buttonProps,
   setup(props) {
-    const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props)
+    const { mergedClsPrefixRef, inlineThemeDisabled, mergedRtlRef } =
+      useConfig(props)
     const selfElRef = ref<HTMLElement | null>(null)
     const waveElRef = ref<BaseWaveRef | null>(null)
     const enterPressedRef = ref(false)
@@ -82,6 +90,10 @@ export default defineComponent({
         props.bordered
     )
     const mergedSizeRef = computed(() => props.size ?? 'medium')
+    const mergedFocusableRef = computed(
+      () => props.focusable && !props.disabled
+    )
+    const rtlEnabledRef = useRtl('Button', mergedRtlRef, mergedClsPrefixRef)
     const themeRef = useTheme(
       'Button',
       'button',
@@ -90,111 +102,145 @@ export default defineComponent({
       props,
       mergedClsPrefixRef
     )
-    const cssVarsRef = inlineThemeDisabled
-      ? undefined
-      : computed((): CSSProperties => {
-          const {
-            strong,
-            type,
-            text,
-            ghost,
-            dashed,
-            color,
-            textColor,
-            circle,
-            round
-          } = props
-          const {
-            common: { cubicBezierEaseInOut, cubicBezierEaseOut },
-            self
-          } = themeRef.value
-          const size = mergedSizeRef.value
-          const typeIsTertiary = type === 'tertiary'
-          const typeIsDefault = type === 'default'
-          const mergedType = typeIsTertiary ? 'default' : type
-          const {
-            rippleDuration,
-            waveOpacity,
-            opacityDisabled,
-            fontWeight,
-            fontWeightStrong,
-            // size
-            [createKey('height', size)]: height,
-            [createKey('fontSize', size)]: fontSize,
-            [createKey('borderRadius', size)]: borderRadius,
-            [createKey('padding', size)]: padding,
-            [createKey('paddingRound', size)]: paddingRound,
-            [createKey('iconSize', size)]: iconSize,
-            [createKey('iconMargin', size)]: iconMargin,
-            //border
-            [createKey('border', mergedType)]: border,
-            // color
-            textColorPrimary
-          } = self
+    const cssVarsRef = computed((): CSSProperties => {
+      const {
+        strong,
+        type,
+        text,
+        ghost,
+        dashed,
+        color,
+        textColor,
+        circle,
+        round
+      } = props
+      const {
+        common: { cubicBezierEaseInOut, cubicBezierEaseOut },
+        self
+      } = themeRef.value
+      const size = mergedSizeRef.value
+      const typeIsTertiary = type === 'tertiary'
+      const typeIsDefault = type === 'default'
+      const mergedType = typeIsTertiary ? 'default' : type
+      const {
+        rippleDuration,
+        waveOpacity,
+        opacityDisabled,
+        fontWeight,
+        fontWeightStrong,
+        // size
+        [createKey('height', size)]: height,
+        [createKey('fontSize', size)]: fontSize,
+        [createKey('borderRadius', size)]: borderRadius,
+        [createKey('padding', size)]: padding,
+        [createKey('paddingRound', size)]: paddingRound,
+        [createKey('iconSize', size)]: iconSize,
+        [createKey('iconMargin', size)]: iconMargin,
+        //border
+        [createKey('border', mergedType)]: border,
+        // color
+        textColorPrimary
+      } = self
 
-          //border
-          const borderProps = text
-            ? {
-                '--k-border': 'none',
-                '--k-border-hover': 'none'
-              }
-            : { '--k-border': border }
-          // size
-          const sizeProps = {
-            '--k-width': circle && !text ? height : 'initial',
-            '--k-height': text ? 'initial' : height,
-            '--k-font-size': fontSize,
-            '--k-padding':
-              circle || text ? 'initial' : round ? paddingRound : padding,
-            '--k-border-radius': text
-              ? 'initial'
-              : circle || round
-              ? height
-              : borderRadius,
-            '--k-icon-size': iconSize,
-            '--k-icon-margin': iconMargin
+      //border
+      const borderProps = text
+        ? {
+            '--k-border': 'none',
+            '--k-border-hover': 'none'
           }
+        : { '--k-border': border }
+      // size
+      const sizeProps = {
+        '--k-width': circle && !text ? height : 'initial',
+        '--k-height': text ? 'initial' : height,
+        '--k-font-size': fontSize,
+        '--k-padding':
+          circle || text ? 'initial' : round ? paddingRound : padding,
+        '--k-border-radius': text
+          ? 'initial'
+          : circle || round
+          ? height
+          : borderRadius,
+        '--k-icon-size': iconSize,
+        '--k-icon-margin': iconMargin
+      }
 
-          const colorProps = (() => {
-            if (text) {
-              const propTextColor = textColor || color
-              const mergedTextColor =
-                propTextColor || self[createKey('textColorText', mergedType)]
-              return {
-                '--k-color': '#0000',
-                '--k-color-hover': '#0000'
-              }
-            }
-            if (ghost || dashed) {
-              const mergedTextColor = textColor || color
-              return {}
-            }
-            return {
-              '--k-color': color || self[createKey('color', mergedType)],
-              '--k-color-hover': color
-                ? createHoverColor(color)
-                : self[createKey('colorHover', mergedType)],
-              '--k-color-pressed': color
-                ? createPressedColor(color)
-                : self[createKey('colorPressed', mergedType)]
-            }
-          })()
-
+      const colorProps = (() => {
+        if (text) {
+          const propTextColor = textColor || color
+          const mergedTextColor =
+            propTextColor || self[createKey('textColorText', mergedType)]
           return {
-            '--k-bezier': cubicBezierEaseInOut,
-            '--k-bezier-ease-out': cubicBezierEaseOut,
-            '--k-ripple-duration': rippleDuration,
-            '--k-wave-opacity': waveOpacity,
-            '--k-opacity-disabled': opacityDisabled,
-            '--k-font-weight': strong ? fontWeightStrong : fontWeight,
-            ...sizeProps,
-            ...colorProps,
-            ...borderProps
+            '--k-color': '#0000',
+            '--k-color-hover': '#0000'
           }
-        })
-    const mergedFocusableRef = computed(
-      () => props.focusable && !props.disabled
-    )
+        }
+        if (ghost || dashed) {
+          const mergedTextColor = textColor || color
+          return {}
+        }
+        return {
+          '--k-color': color || self[createKey('color', mergedType)],
+          '--k-color-hover': color
+            ? createHoverColor(color)
+            : self[createKey('colorHover', mergedType)],
+          '--k-color-pressed': color
+            ? createPressedColor(color)
+            : self[createKey('colorPressed', mergedType)]
+        }
+      })()
+
+      return {
+        '--k-bezier': cubicBezierEaseInOut,
+        '--k-bezier-ease-out': cubicBezierEaseOut,
+        '--k-ripple-duration': rippleDuration,
+        '--k-wave-opacity': waveOpacity,
+        '--k-opacity-disabled': opacityDisabled,
+        '--k-font-weight': strong ? fontWeightStrong : fontWeight,
+        ...sizeProps,
+        ...colorProps,
+        ...borderProps
+      }
+    })
+    const themeClassHandler = inlineThemeDisabled
+      ? useThemeClass(
+          'button',
+          computed(() => {
+            let hash = ''
+            const {
+              dashed,
+              ghost,
+              text,
+              round,
+              circle,
+              secondary,
+              tertiary,
+              quaternary,
+              strong,
+              color,
+              textColor,
+              type
+            } = props
+            const { value: size } = mergedSizeRef
+            if (dashed) hash += 'a'
+            if (ghost) hash += 'b'
+            if (text) hash += 'c'
+            if (round) hash += 'd'
+            if (circle) hash += 'e'
+            if (secondary) hash += 'f'
+            if (tertiary) hash += 'g'
+            if (quaternary) hash += 'h'
+            if (strong) hash += 'i'
+            if (color) hash += 'j' + colorToClass(color)
+            if (textColor) hash += 'k' + colorToClass(textColor)
+            hash += 'l' + size[0]
+            hash += 'm' + type[0]
+            return hash
+          }),
+          cssVarsRef,
+          props
+        )
+      : undefined
 
     const handleMousedown = (e: MouseEvent) => {
       if (props.nativeFocusBehavior) return
@@ -207,7 +253,7 @@ export default defineComponent({
       const { onClick } = props
       if (props.disabled || props.loading) return
       if (onClick) call(onClick, e)
-      // if (!props.text) waveElRef.value?.play()
+      if (!props.text) waveElRef.value?.play()
     }
     const handleBlur = () => {
       enterPressedRef.value = false
@@ -234,7 +280,8 @@ export default defineComponent({
       showBorder: showBorderRef,
       mergedSize: mergedSizeRef,
       enterPressed: enterPressedRef,
-      cssVars: cssVarsRef,
+      rtlEnabled: rtlEnabledRef,
+      cssVars: inlineThemeDisabled ? undefined : cssVarsRef,
       customColorCssVars: computed(() => {
         const { color } = props
         if (!color) return undefined
@@ -252,11 +299,14 @@ export default defineComponent({
       handleBlur,
       handleKeydown,
       handleKeyup,
-      handleMousedown
+      handleMousedown,
+      themeClass: themeClassHandler?.themeClass,
+      onRender: themeClassHandler?.onRender
     }
   },
   render() {
     const { mergedClsPrefix } = this
+    this.onRender?.()
     const children = resolveWrappedSlot(
       this.$slots.default,
       (children) =>
@@ -265,15 +315,15 @@ export default defineComponent({
         )
     )
 
-    console.log(this.disabled);
-
     return (
       <this.tag
         ref="selfElRef"
         class={[
+          this.themeClass,
           `${mergedClsPrefix}-button`,
           `${mergedClsPrefix}-button--${this.type}-type`,
           `${mergedClsPrefix}-button--${this.mergedSize}-type`,
+          this.rtlEnabled && `${mergedClsPrefix}-button--rtl`,
           this.disabled && `${mergedClsPrefix}-button--disabled`,
           this.block && `${mergedClsPrefix}-button--block`,
           this.enterPressed && `${mergedClsPrefix}-button--pressed`,
@@ -293,7 +343,9 @@ export default defineComponent({
         onKeydown={this.handleKeydown}
         onMousedown={this.handleMousedown}
       >
-        {children}
+        {this.iconPlacement === 'right' && children}
+        {}
+        {this.iconPlacement === 'left' && children}
         {!this.text && <BaseWave clsPrefix={mergedClsPrefix} ref="waveElRef" />}
         {this.showBorder && (
           <div

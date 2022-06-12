@@ -64,4 +64,29 @@ describe('k-button', () => {
     expect(inst.find('.k-button__content').element.textContent).toBe('test')
     inst.unmount()
   })
+  it(`should work with 'tag' prop`, () => {
+    const inst = mount(Button, {
+      props: {
+        text: true,
+        tag: 'a',
+        href: 'https://github.com/korylee',
+        target: '_blank',
+        type: 'primary'
+      },
+      slots: {
+        default: () => 'test'
+      }
+    })
+    expect(inst.find('a').attributes('style')).toMatchSnapshot()
+    expect(inst.find('a').classes()).toContain('k-button--primary-type')
+    expect(inst.find('a').attributes('href')).toContain(
+      'https://github.com/korylee'
+    )
+    expect(inst.find('a').attributes('type')).toContain('button')
+    expect(inst.find('a').attributes('disabled')).toContain('false')
+    expect(inst.find('a').attributes('target')).toContain('_blank')
+    expect(inst.find('.k-button__content').element.textContent).toBe('test')
+    inst.unmount()
+  })
+
 })

@@ -83,7 +83,25 @@ export default c([
         border: 'var(--k-border)',
         borderColor: '#0000',
         zIndex: 1
-      })
+      }),
+      cE(
+        'icon',
+        {
+          margin: 'var(--k-icon-margin)',
+          marginLeft: 0,
+          height: 'var(--k-icon-size)',
+          width: 'var(--k-icon-size)',
+          fontSize: 'var(--k-icon-size)',
+          position: 'relative',
+          flexShrink: 0
+        },
+        [
+          cB('icon-slot', {
+            height: 'var(--k-icon-size)',
+            width: 'var(--k-icon-size)'
+          })
+        ]
+      )
     ]
   ),
   c('@keyframes button-wave-spread', {

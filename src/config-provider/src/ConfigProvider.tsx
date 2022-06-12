@@ -132,14 +132,14 @@ export default defineComponent({
       const hasThemeOverrides =
         mergedThemeOverrides && !Object.keys(mergedThemeOverrides).length
       const themeName = theme?.name
-      const hashMergedThemeOverrides = hash(
-        JSON.stringify(mergedThemeOverrides)
-      )
-      if (themeName) {
-        if (hasThemeOverrides) return `${themeName}-${hashMergedThemeOverrides}`
-        return themeName
+      if (hasThemeOverrides) {
+        const hashMergedThemeOverrides = hash(
+          JSON.stringify(mergedThemeOverrides)
+        )
+        if (themeName) return `${themeName}-${hashMergedThemeOverrides}`
+        return hashMergedThemeOverrides
       }
-      if (hasThemeOverrides) return hashMergedThemeOverrides
+      if (themeName) return themeName
       return ''
     })
     const mergedLocaleRef = computed(() => {
