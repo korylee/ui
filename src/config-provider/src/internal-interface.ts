@@ -1,8 +1,8 @@
 import type { CNode } from 'css-render'
 import type { Ref, VNodeChild } from 'vue'
+import { ButtonTheme } from '../../button/styles'
 import type { LayoutTheme } from '../../layout/styles'
-import type { CommonLocale } from '../../locales'
-import type { DateLocale } from '../../locales/date/enUS'
+import type { CommonLocale, DateLocale } from '../../locales'
 import type { TypographyTheme } from '../../typogrphy/styles'
 import type { Hljs } from '../../_hooks'
 import type { GlobalTheme } from './interface'
@@ -22,6 +22,7 @@ export type RtlItems = RtlItem[]
 export interface GlobalThemeWithoutCommon {
   Layout?: LayoutTheme
   Typography?: TypographyTheme
+  Button?: ButtonTheme
 }
 
 export type RtlEnabledState = Partial<

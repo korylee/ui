@@ -8,13 +8,15 @@
     "clean": "rimraf site lib es node_modules/naive-ui themes/**/es themes/**/lib",
     "lint:code": "eslint \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
     "lint:fix": "eslint --fix \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/generator": "^7.18.2",
     "@babel/parser": "^7.18.4",
+    "@babel/preset-env": "^7.18.2",
     "@babel/traverse": "^7.18.2",
     "@rollup/plugin-babel": "^5.3.1",
     "@types/node": "^17.0.41",
@@ -24,6 +26,8 @@
     "@vicons/ionicons5": "^0.12.0",
     "@vitejs/plugin-vue": "^2.3.3",
     "@vue/eslint-config-typescript": "^10.0.0",
+    "@vue/server-renderer": "^3.2.37",
+    "@vue/test-utils": "2.0.0",
     "autoprefixer": "^10.4.7",
     "cross-env": "^7.0.3",
     "cssnano": "^5.1.11",
@@ -40,6 +44,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.1.0",
     "fs-extra": "^10.1.0",
+    "jsdom": "^19.0.0",
     "lodash.camelcase": "^4.3.0",
     "marked": "^4.0.16",
     "postcss": "^8.4.14",

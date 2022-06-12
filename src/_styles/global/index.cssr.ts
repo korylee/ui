@@ -1,5 +1,5 @@
 import { c } from '../../_utils/cssr'
-import commonVariables from '../common/common-variables'
+import commonVariables from '../common/common-vars'
 
 const { fontSize, fontFamily, lineHeight } = commonVariables
 

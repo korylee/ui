@@ -1,7 +1,4 @@
-import {
-  ExtractThemeOverrides,
-  PartialExtractThemeOverrides
-} from '../../_hooks/use-theme'
+import type { PartialExtractThemeOverrides } from '../../_hooks'
 import type { ThemeCommonVars } from '../../_styles/common'
 import type { GlobalThemeWithoutCommon } from './internal-interface'
 

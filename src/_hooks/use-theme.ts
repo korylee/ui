@@ -90,7 +90,7 @@ function useTheme<N, T, R>(
     const mountStyle = (): void => {
       const clsPrefix = clsPrefixRef?.value
       style.mount({
-        id: clsPrefix === undefined ? mountId : clsPrefix + mountId,
+        id: clsPrefix === undefined ? mountId : `${clsPrefix}-${mountId}`,
         head: true,
         props: {
           bPrefix: clsPrefix ? `.${clsPrefix}-` : undefined

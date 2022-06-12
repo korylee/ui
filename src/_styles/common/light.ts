@@ -1,4 +1,4 @@
-import commonVariables from './common-variables'
+import commonVariables from './common-vars'
 
 const base = {
   neutralBase: '#ffffff',
@@ -11,16 +11,65 @@ const base = {
   alpha3: '0.38',
   alpha4: '0.24', // disabled text, placeholder, icon
   alpha5: '0.18', // disabled placeholder
+  alphaDisabled: '0.5',
 
-  primaryDefault: '#36ad6a'
+  // primary
+  primaryDefault: '#18a058',
+  primaryHover: '#36ad6a',
+  primaryActive: '#0c7a43',
+
+  // info
+  infoDefault: '#4098fc',
+  infoHover: '#2080f0',
+  infoActive: '#1060c9',
+  infoSuppl: '#4098fc',
+  //success
+  successDefault: '#18a058',
+  successHover: '#36ad6a',
+  successActive: '#0c7a43',
+  // warning
+  warningDefault: '#fcb040',
+  warningHover: '#f0a020',
+  warningActive: '#c97c10',
+  // error
+  errorDefault: '#d03050',
+  errorHover: '#de576d',
+  errorActive: '#ab1f3f',
+  errorSuppl: '#de576d'
 }
 
 const derived = {
   name: 'common',
   ...commonVariables,
   baseColor: base.neutralBase,
+  // primary
+  primaryColor: base.primaryDefault,
+  primaryColorHover: base.primaryHover,
+  primaryColorPressed: base.primaryActive,
+  // info
+  infoColor: base.infoDefault,
+  infoColorHover: base.infoHover,
+  infoColorPressed: base.infoActive,
+  // success
+  successColor: base.successDefault,
+  successColorHover: base.successHover,
+  successColorPressed: base.successActive,
+  // waring
+  warningColor: base.warningDefault,
+  warningColorHover: base.warningHover,
+  warningColorPressed: base.warningActive,
+  // error
+  errorColor: base.errorDefault,
+  errorColorHover: base.errorHover,
+  errorColorPressed: base.errorActive,
+  // text color
+  textColorBase: base.neutralTextBase,
+  textColor1: 'rgb(31, 34, 37)',
+  textColor2: 'rgb(51, 54, 57)',
+  textColor3: 'rgb(118, 124, 130)',
 
-  primaryColor: base.primaryDefault
+  borderColor: 'rgb(224, 224, 300)',
+  opacityDisabled: base.alphaDisabled
 }
 
 export default derived

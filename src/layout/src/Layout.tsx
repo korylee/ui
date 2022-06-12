@@ -36,7 +36,7 @@ export const createLayoutComponent = (isContent: boolean) =>
       const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props)
       const themeRef = useTheme(
         'Layout',
-        '-layout',
+        'layout',
         style,
         layoutLight,
         props,
@@ -74,6 +74,7 @@ export const createLayoutComponent = (isContent: boolean) =>
               {this.$slots}
             </div>
           ) : null}
+          {false}
         </div>
       )
     }

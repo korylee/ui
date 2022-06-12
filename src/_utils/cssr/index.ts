@@ -21,7 +21,7 @@ const { cB, cE, cM, cNotM } = plugin
 function insideModal(style: CNode) {
   return c(
     ({ props: { bPrefix } }) =>
-      `${bPrefix || prefix}modalm ${bPrefix || prefix}drawer`,
+      `${bPrefix || prefix}modal, ${bPrefix || prefix}drawer`,
     [style]
   )
 }
