@@ -23,11 +23,11 @@ function ensureValidVNode(vnodes: VNodeArrayChildren) {
   return null
 }
 
-export const isSlotEmpty = (slot: Slot | undefined) =>
-  !(slot && ensureValidVNode(slot()))
-
 export const resolveSlot = <T>(slot: Slot | undefined, props?: T) =>
   (slot && ensureValidVNode(slot(props))) ?? null
+
+export const isSlotEmpty = (slot: Slot | undefined) =>
+  !(slot && ensureValidVNode(slot()))
 
 export function resolveWrappedSlot<T, R = any>(
   slot: Slot | undefined,
