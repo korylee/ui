@@ -1,11 +1,31 @@
-const enDocRoutes = []
+const zhDocs = import.meta.glob('../../src/*/docs/zhCN/index.demo-entry.md', {
+  eager: true
+})
+const zhComponents = import.meta.glob(
+  '../../src/*/demos/zhCN/index.demo-entry.md',
+  { eager: true }
+)
 
-const zhComponentRoutes = [
-  {
-    path: 'upload',
-    component: () => import('../../src/upload/demos/zhCN/index.demo-entry.md')
-  }
-]
+const getRoutes = (list, reg) =>
+  Object.keys(list).map((path) => {
+    const name = path.match(
+      /\.\.\/\.\.\/src\/(.*)\/demos\/zhCN\/index\.demo-entry\.md$/
+    )?.[1]
+    return {
+      name,
+      path: name?.toLowerCase(),
+      component: list[path].default
+    }
+  })
+
+const zhDocRoutes = getRoutes(
+  zhDocs,
+  /\.\.\/\.\.\/src\/(.*)\/docs\/zhCN\/index\.demo-entry\.md$/
+)
+const zhComponentRoutes = getRoutes(
+  zhComponents,
+  /\.\.\/\.\.\/src\/(.*)\/demos\/zhCN\/index\.demo-entry\.md$/
+)
 
 const LAYOUT = () => import('../pages/Layout.vue')
 
@@ -19,7 +39,13 @@ export const routes = [
     name: 'enDocs',
     path: '/en-US/:theme/docs',
     component: LAYOUT,
-    children: enDocRoutes
+    children: []
+  },
+  {
+    name: 'zhDocs',
+    path: '/zh-CN/:theme/docs',
+    component: LAYOUT,
+    children: zhDocRoutes
   },
   {
     name: 'zhComponents',

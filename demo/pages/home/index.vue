@@ -1,5 +1,9 @@
 <template>
-  <k-layout> home demo2</k-layout>
+  <k-layout id="doc-layout">
+    <k-layout>
+      <router-view />
+    </k-layout>
+  </k-layout>
 </template>
 
 <script>
@@ -9,5 +13,3 @@ export default defineComponent({
   name: 'Home'
 })
 </script>
-
-<style></style>
