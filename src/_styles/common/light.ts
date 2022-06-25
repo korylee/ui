@@ -69,6 +69,7 @@ const derived = {
   textColor3: 'rgb(118, 124, 130)',
 
   borderColor: 'rgb(224, 224, 300)',
+  codeColor: 'rgb(244, 244, 248)',
   opacityDisabled: base.alphaDisabled
 }
 

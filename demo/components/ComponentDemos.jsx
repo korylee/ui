@@ -8,7 +8,6 @@ export default defineComponent({
   },
   render() {
     const children = this.$slots.default?.() ?? []
-    console.log(children);
     return (
       <div
         style={{

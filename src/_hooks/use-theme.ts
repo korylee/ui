@@ -15,7 +15,7 @@ import { configProviderInjectionKey } from '../config-provider/src/context'
 import { merge } from 'lodash-es'
 import globalStyle from '../_styles/global/index.cssr'
 
-export interface Theme<N, T = {}, R = any> {
+export interface ThemeType<N, T = {}, R = any> {
   name: N
   common?: ThemeCommonVars
   peers?: R
@@ -28,19 +28,19 @@ export interface ThemeProps<T> {
   builtinThemeOverrides: PropType<ExtractThemeOverrides<T>>
 }
 
-export type ExtractThemeVars<T> = T extends Theme<unknown, infer U, unknown>
+export type ExtractThemeVars<T> = T extends ThemeType<unknown, infer U, unknown>
   ? unknown extends U
     ? {}
     : U
   : {}
 
-export type ExtractPeerOverrides<T> = T extends Theme<unknown, unknown, infer V>
+export type ExtractPeerOverrides<T> = T extends ThemeType<unknown, unknown, infer V>
   ? {
       peers?: { [k in keyof V]?: ExtractPeerOverrides<V[k]> }
     }
   : T
 
-export type ExtractMergedPeerOverrides<T> = T extends Theme<
+export type ExtractMergedPeerOverrides<T> = T extends ThemeType<
   unknown,
   unknown,
   infer V
@@ -61,7 +61,7 @@ type UseThemeProps<T> = Readonly<{
   builtinThemeOverrides?: ExtractThemeOverrides<T>
 }>
 
-export type MergedTheme<T> = T extends Theme<unknown, infer V, infer W>
+export type MergedTheme<T> = T extends ThemeType<unknown, infer V, infer W>
   ? {
       common: ThemeCommonVars
       self: V
@@ -71,8 +71,8 @@ export type MergedTheme<T> = T extends Theme<unknown, infer V, infer W>
   : T
 
 export function createTheme<N extends string, T, R>(
-  theme: Theme<N, T, R>
-): Theme<N, T, R> {
+  theme: ThemeType<N, T, R>
+): ThemeType<N, T, R> {
   return theme
 }
 
@@ -80,10 +80,10 @@ function useTheme<N, T, R>(
   resolveId: Exclude<keyof GlobalTheme, 'common' | 'name'>,
   mountId: string,
   style: CNode | undefined,
-  defaultTheme: Theme<N, T, R>,
-  props: UseThemeProps<Theme<N, T, R>>,
+  defaultTheme: ThemeType<N, T, R>,
+  props: UseThemeProps<ThemeType<N, T, R>>,
   clsPrefixRef?: Ref<string | undefined>
-): ComputedRef<MergedTheme<Theme<N, T, R>>> {
+): ComputedRef<MergedTheme<ThemeType<N, T, R>>> {
   const configProvider = inject(configProviderInjectionKey, null)
   if (style) {
     const ssrAdapter = useSsrAdapter()
@@ -116,10 +116,10 @@ function useTheme<N, T, R>(
     const {
       theme: { common: selfCommon, self, peers: selfPeers = {} } = {},
       themeOverrides: selfOverrides = {} as ExtractThemeOverrides<
-        Theme<N, T, R>
+        ThemeType<N, T, R>
       >,
       builtinThemeOverrides: builtinOverrides = {} as ExtractThemeOverrides<
-        Theme<N, T, R>
+        ThemeType<N, T, R>
       >
     } = props
     const { common: selfCommonOverrides, peers: selfPeersOverrides } =

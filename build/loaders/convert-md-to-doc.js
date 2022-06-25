@@ -25,7 +25,7 @@ async function resolveDemoInfos(literal, url, env) {
       variable,
       filename,
       title: await resolveDemoTitle(filename, url),
-      tag: `<${variable}/>`,
+      tag: `<${variable} />`,
       debug
     })
   }
@@ -57,7 +57,7 @@ function genPageAnchorTemplate(tokens) {
 function genDemosTemplate(demoInfos, colSpan) {
   return `
   <component-demos :span="${colSpan}">
-  ${demoInfos.map(({ tag }) => tag).join('\n')}
+    ${demoInfos.map(({ tag }) => tag).join('\n')}
   </component-demos>`
 }
 
@@ -83,7 +83,7 @@ function genScript(demoInfos, components = [], url, forceShowAnchor) {
   return `
 <script>
 ${importStmts}
-import {computed,defineComponent } from 'vue'
+import { computed,defineComponent } from 'vue'
 import { useMemo } from 'vooks'
 import { useDisplayMode } from '/demo/store'
 import { useIsMobile } from '/demo/utils/composables'
@@ -187,6 +187,5 @@ export default async function convertMdToDoc(text, url, env = 'development') {
   </template>
   `
   const doScript = await genScript(demoInfos, components, url, forceShowAnchor)
-  console.log(demoInfos, components, docTemplate, doScript)
   return `${docTemplate}\n\n${doScript}`
 }

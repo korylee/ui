@@ -1,8 +1,9 @@
 export type {
   ThemeProps,
-  Theme,
+  ThemeType as Theme,
   MergedTheme,
-  PartialExtractThemeOverrides
+  PartialExtractThemeOverrides,
+  ThemeType
 } from './use-theme'
 export type { Hljs } from './use-hljs'
 

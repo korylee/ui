@@ -1,5 +1,5 @@
 export type { MaybeArray } from './vue'
-export type { ExtractPublicPropTypes } from './ui'
+export type { ExtractPublicPropTypes, BasicSize } from './ui'
 
 export {
   createInjectionKey,
@@ -7,9 +7,10 @@ export {
   call,
   resolveWrappedSlot,
   isSlotEmpty,
-  resolveSlot
+  resolveSlot,
+  flatten
 } from './vue'
-export { warn, throwError } from './ui'
+export { warn, throwError, smallerSize, largerSize } from './ui'
 export { createKey, c, cB, cCB, cE, cM, cNotM } from './cssr'
 export { createHoverColor, createPressedColor } from './color'
 export { colorToClass } from './css'

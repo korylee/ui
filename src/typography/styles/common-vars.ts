@@ -4,5 +4,6 @@ export default {
   headerFontSize3: '18px',
   headerFontSize4: '16px',
   headerFontSize5: '16px',
-  headerFontSize6: '16px'
+  headerFontSize6: '16px',
+  pMargin: '16px 0'
 }

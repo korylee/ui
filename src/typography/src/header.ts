@@ -3,7 +3,7 @@ import type { ExtractPublicPropTypes } from '../../_utils'
 import { defineComponent, PropType, h, computed } from 'vue'
 import { ThemeProps, useConfig, useTheme } from '../../_hooks'
 import { createKey } from '../../_utils/cssr'
-import { typographyList, TypographyTheme } from '../styles'
+import { typographyLight, TypographyTheme } from '../styles'
 import  style from './styles/header.cssr'
 
 const headerProps = {
@@ -29,7 +29,7 @@ const createHeader = (level: 1 | 2 | 3 | 4 | 5 | 6) =>
         'Typography',
         'h',
         style,
-        typographyList,
+        typographyLight,
         props,
         mergedClsPrefixRef
       )
