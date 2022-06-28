@@ -1,6 +1,14 @@
 import type { ButtonSize, ButtonType } from './interface'
 
-import { computed, CSSProperties, defineComponent, h, PropType, ref } from 'vue'
+import {
+  ButtonHTMLAttributes,
+  computed,
+  CSSProperties,
+  defineComponent,
+  h,
+  PropType,
+  ref
+} from 'vue'
 import {
   ThemeProps,
   useConfig,
@@ -17,8 +25,7 @@ import {
   resolveWrappedSlot,
   createPressedColor,
   colorToClass,
-  isSlotEmpty,
-  resolveSlot
+  TsxComponent
 } from '../../_utils'
 import { buttonLight, ButtonTheme } from '../styles'
 import {
@@ -78,7 +85,7 @@ const buttonProps = {
 
 export type ButtonProps = ExtractPublicPropTypes<typeof buttonProps>
 
-export default defineComponent({
+const Button = defineComponent({
   name: 'Button',
   props: buttonProps,
   setup(props) {
@@ -179,21 +186,42 @@ export default defineComponent({
             propTextColor || self[createKey('textColorText', mergedType)]
           return {
             '--k-color': '#0000',
-            '--k-color-hover': '#0000'
+            '--k-color-hover': '#0000',
+            '--k-color-pressed': '#0000',
+            '--k-color-focus': '#0000',
+            '--k-color-disabled': '#0000',
+            '--k-ripple-color': '#0000',
+            '--k-text-color': mergedTextColor
+          }
+        } else if (ghost || dashed) {
+          const mergedTextColor = textColor || color
+          return {
+            '--k-color': '#0000',
+            '--k-color-hover': '#0000',
+            '--k-color-pressed': '#0000',
+            '--k-color-focus': '#0000',
+            '--k-color-disabled': '#0000',
+            '--k-ripple-color':
+              color || self[createKey('rippleColor', mergedType)],
+            '--k-text-color':
+              mergedTextColor || self[createKey('textColorGhost', mergedType)]
           }
         }
-        if (ghost || dashed) {
-          const mergedTextColor = textColor || color
-          return {}
-        }
+        const textColorType = color ? 'primary' : mergedType
         return {
           '--k-color': color || self[createKey('color', mergedType)],
           '--k-color-hover': color
             ? createHoverColor(color)
             : self[createKey('colorHover', mergedType)],
+          '--k-ripple-color':
+            color || self[createKey('rippleColor', mergedType)],
           '--k-color-pressed': color
             ? createPressedColor(color)
-            : self[createKey('colorPressed', mergedType)]
+            : self[createKey('colorPressed', mergedType)],
+          '--k-text-color':
+            textColor || self[createKey('textColor', color ? 'primary' : type)],
+          '--k-text-color-hover':
+            textColor || self[createKey('textColorHover', textColorType)]
         }
       })()
 
@@ -400,3 +428,8 @@ export default defineComponent({
     )
   }
 })
+
+export default Button
+
+export const XButton: TsxComponent<typeof buttonProps, ButtonHTMLAttributes> =
+  Button as any

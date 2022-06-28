@@ -1,6 +1,6 @@
 import { describe, it, vi, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { Button } from '../index'
+import { Button, XButton } from '../index'
 import { h } from 'vue'
 
 describe('k-button', () => {
@@ -36,8 +36,8 @@ describe('k-button', () => {
   })
   it('pressed native event & attr tsx type check', () => {
     ;<div>
-      <Button onMousedown={() => {}}></Button>
-      <Button formaaction=""></Button>
+      <XButton onMousedown={() => {}}></XButton>
+      <XButton formaction=""></XButton>
     </div>
   })
   it('show work with `attr-type prop`', () => {
@@ -88,5 +88,4 @@ describe('k-button', () => {
     expect(inst.find('.k-button__content').element.textContent).toBe('test')
     inst.unmount()
   })
-
 })

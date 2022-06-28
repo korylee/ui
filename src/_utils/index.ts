@@ -1,4 +1,4 @@
-export type { MaybeArray } from './vue'
+export type { MaybeArray, TsxComponent } from './vue'
 export type { ExtractPublicPropTypes, BasicSize } from './ui'
 
 export {
