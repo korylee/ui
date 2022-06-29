@@ -1,4 +1,4 @@
-import { defineComponent, toRef } from 'vue'
+import { defineComponent, toRef,h } from 'vue'
 import { useStyle } from '../../../_hooks'
 import style from './styles/index.cssr'
 

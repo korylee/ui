@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "paths": {
-      "kory-ui": [
+      "@korylee/ui": [
         "./src"
-      ]
+      ],
     },
     "strict": true,
     "strictNullChecks": true,

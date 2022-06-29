@@ -1,10 +1,12 @@
+import { composite, rgba } from 'seemly'
 import commonVariables from './common-vars'
 
 const base = {
-  neutralBase: '#ffffff',
-  neutralInvertBase: '#000000',
-  neutralTextBase: '#000000',
-  neutralPopover: '#ffffff',
+  neutralBase: '#FFF',
+  neutralInvertBase: '#000',
+  neutralTextBase: '#000',
+  neutralPopover: '#fff',
+  neutralBody: '#fff',
 
   alpha1: '0.82',
   alpha2: '0.72',
@@ -37,6 +39,17 @@ const base = {
   errorActive: '#ab1f3f',
   errorSuppl: '#de576d'
 }
+const baseBackgroundRgb = rgba(base.neutralBase)
+const baseInvertBackgroundRbg = rgba(base.neutralInvertBase)
+
+function neutral(alpha: string | number) {
+  const overlayRgba = Array.from(baseInvertBackgroundRbg)
+  overlayRgba[3] = Number(alpha)
+  return composite(
+    baseBackgroundRgb,
+    overlayRgba as [number, number, number, number]
+  )
+}
 
 const derived = {
   name: 'common',
@@ -68,8 +81,12 @@ const derived = {
   textColor2: 'rgb(51, 54, 57)',
   textColor3: 'rgb(118, 124, 130)',
 
+  iconColor: neutral(base.alpha4),
+
   borderColor: 'rgb(224, 224, 300)',
+  bodyColor: base.neutralBody,
   codeColor: 'rgb(244, 244, 248)',
+  actionColor: 'rgb(250, 250, 252)',
   opacityDisabled: base.alphaDisabled
 }
 

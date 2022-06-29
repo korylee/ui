@@ -34,7 +34,11 @@ export type ExtractThemeVars<T> = T extends ThemeType<unknown, infer U, unknown>
     : U
   : {}
 
-export type ExtractPeerOverrides<T> = T extends ThemeType<unknown, unknown, infer V>
+export type ExtractPeerOverrides<T> = T extends ThemeType<
+  unknown,
+  unknown,
+  infer V
+>
   ? {
       peers?: { [k in keyof V]?: ExtractPeerOverrides<V[k]> }
     }
@@ -45,7 +49,7 @@ export type ExtractMergedPeerOverrides<T> = T extends ThemeType<
   unknown,
   infer V
 >
-  ? { [k in keyof V]: ExtractPeerOverrides<V[k]> }
+  ? { [k in keyof V]?: ExtractPeerOverrides<V[k]> }
   : T
 
 export type ExtractThemeOverrides<T> = Partial<ExtractThemeVars<T>> &
@@ -157,7 +161,12 @@ function useTheme<N, T, R>(
       common: mergedCommon,
       self: mergedSelf,
       peers: merge({}, defaultTheme.peers, globalPeers, selfPeers),
-      peerOverrides: merge({}, globalPeersOverrides, selfPeersOverrides)
+      peerOverrides: merge(
+        {},
+        builtinOverrides.peers,
+        globalPeersOverrides,
+        selfPeersOverrides
+      )
     }
   })
 }

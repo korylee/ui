@@ -1,15 +1,18 @@
 {
   "name": "ui",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.1",
   "scripts": {
     "dev": "pnpm run clean && cross-env NODE_ENV=development vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build:site": "vue-tsc --noEmit && vite build",
+    "build:package": "pnpm run gen-version && pnpm run clean && pnpm run gen-volar-dts && tsc -b --force tsconfig.esm.json && rollup -c",
     "clean": "rimraf site lib es node_modules/naive-ui themes/**/es themes/**/lib",
     "clean:lib": "rimraf node_modules",
     "lint:code": "eslint \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
     "lint:fix": "eslint --fix \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
     "preview": "vite preview",
+    "gen-version": "esno scripts/gen-version",
+    "gen-volar-dts": "esbuild scripts/gen-components-declaration.js --bundle --platform=node | node",
     "test": "vitest"
   },
   "devDependencies": {
@@ -20,6 +23,8 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/traverse": "^7.18.2",
     "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/node": "^17.0.41",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
@@ -33,6 +38,7 @@
     "autoprefixer": "^10.4.7",
     "cross-env": "^7.0.3",
     "cssnano": "^5.1.11",
+    "deepmerge": "^4.2.2",
     "esbuild": "^0.14.43",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
@@ -45,6 +51,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.1.0",
+    "esno": "^0.16.3",
     "fs-extra": "^10.1.0",
     "jsdom": "^19.0.0",
     "lodash.camelcase": "^4.3.0",
@@ -53,13 +60,14 @@
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.6",
-    "typescript": "^4.7.3",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "typescript": "^4.7.4",
     "vfonts": "^0.1.0",
-    "vite": "3.0.0-beta.1",
-    "vitest": "^0.14.2",
+    "vite": "3.0.0-beta.5",
+    "vitest": "^0.16.0",
     "vue": "^3.2.37",
     "vue-router": "^4.0.15",
-    "vue-tsc": "^0.34.17"
+    "vue-tsc": "^0.38.2"
   },
   "dependencies": {
     "@css-render/plugin-bem": "^0.15.10",
@@ -72,7 +80,8 @@
     "highlight.js": "^11.5.1",
     "lodash-es": "^4.17.21",
     "seemly": "^0.3.4",
-    "vooks": "^0.2.12"
+    "vooks": "^0.2.12",
+    "vueuc": "^0.4.45"
   },
   "peerDependencies": {
     "vue": "^3.0.0"

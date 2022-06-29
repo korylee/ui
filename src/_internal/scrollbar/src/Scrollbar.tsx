@@ -1,4 +1,4 @@
-import { defineComponent, HTMLAttributes, PropType } from 'vue'
+import { defineComponent, HTMLAttributes, PropType, h } from 'vue'
 import { ExtractPublicPropTypes, TsxComponent } from '../../../_utils'
 
 const scrollbarProps = {
@@ -15,7 +15,7 @@ const Scrollbar = defineComponent({
   name: 'ScrollBar',
   props: scrollbarProps,
   inheritAttrs: false,
-  render(){
+  render() {
     return <div></div>
   }
 })

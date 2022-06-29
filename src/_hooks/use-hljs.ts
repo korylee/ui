@@ -24,5 +24,5 @@ export default function useHljs(
     if (!shouldHlRef) warnHljs()
     else watchEffect(() => shouldHlRef.value && warnHljs())
   }
-  return computed(() => props.hljs || configProvider?.mergedHljsRef.value)
+  return computed(() => (props.hljs as any) || configProvider?.mergedHljsRef.value)
 }

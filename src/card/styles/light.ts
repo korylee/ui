@@ -3,11 +3,11 @@ import { commonLight, ThemeCommonVars } from '../../_styles/common'
 import commonVariables from './common-variables'
 
 export const self = (vars: ThemeCommonVars) => {
-  const { prinaryColor, lineHeight } = vars
+  const { primaryColor, lineHeight } = vars
   return {
     ...commonVariables,
     lineHeight,
-    colorTarget: prinaryColor
+    colorTarget: primaryColor
   }
 }
 

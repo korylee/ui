@@ -1,4 +1,6 @@
-import { defineConfig } from 'vitest/config'
+/// <reference types="vitest" />
+
+import { defineConfig } from 'vite'
 import babel from '@rollup/plugin-babel'
 import createDemoPlugin from './build/vite-plugin-demo'
 const path = require('node:path')
@@ -9,14 +11,14 @@ export default defineConfig({
   root: __dirname,
   plugins: createDemoPlugin(),
   test: {
-    environment: 'jsdom',
+    environment: 'jsdom'
   },
   resolve: {
     alias:
       env !== 'production'
         ? [
             {
-              find: 'kory-ui',
+              find: '@korylee/ui',
               replacement: path.resolve(__dirname, './src')
             }
           ]
@@ -38,7 +40,7 @@ export default defineConfig({
   },
   esbuild: {
     jsxFactory: 'h',
-    jsxFragment: 'Fragment',
+    jsxFragment: 'Fragment'
     // jsxInject: `import { h } from 'vue'`
   }
 })

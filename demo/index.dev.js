@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import ui from 'kory-ui'
+import ui from '@korylee/ui'
 import { installDemoComponents } from './components'
 import SiteRoot from './SiteRoot.vue'
 import router from './routes/router'

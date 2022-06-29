@@ -2,8 +2,11 @@ import { createTheme } from '../../_hooks/use-theme'
 import { commonLight, ThemeCommonVars } from '../../_styles/common'
 
 export const self = (vars: ThemeCommonVars) => {
-  const { baseColor } = vars
+  const { baseColor, bodyColor, actionColor, textColor2 } = vars
   return {
+    textColor: textColor2,
+    color: bodyColor,
+    colorEmbedded: actionColor,
     siderToggleButtonColor: baseColor
   }
 }

@@ -37,7 +37,8 @@ import {
   toRef,
   ref,
   nextTick,
-  provide
+  provide,
+  Fragment
 } from 'vue'
 import { uploadLight, UploadTheme } from '../styles'
 import {
@@ -208,6 +209,8 @@ function registerHandler(
 }
 
 export type UploadProps = ExtractPublicPropTypes<typeof uploadProps>
+
+interface ImageGroupProps {}
 
 const uploadProps = {
   ...(useTheme.props as ThemeProps<UploadTheme>),
@@ -500,10 +503,10 @@ export default defineComponent({
     )
     if (this.abstract)
       return (
-        <>
+        <Fragment>
           {$slots.default?.()}
           <Teleport to="body">{inputVNode}</Teleport>
-        </>
+        </Fragment>
       )
 
     return (

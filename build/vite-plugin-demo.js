@@ -4,11 +4,14 @@ import siteIndexTransformPlugin from './vite-plugin-index-transform'
 import cssrVitePlugin from './vite-plugin-css-render'
 
 const fileRegex = /\.(md|vue)$/
+
+/** @type {import('vite').PluginOption} */
 const vuePlugin = createVuePlugin({
   include: [/\.vue$/, /\.md$/]
 })
 
 export default function crateDemoPlugin() {
+  /** @type {import('vite').PluginOption} */
   const demoVitePlugin = {
     name: 'demo-vite',
     transform(_, path) {

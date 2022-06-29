@@ -6,7 +6,7 @@ import type { TypographyTheme } from '../../typography/styles'
 import type { UploadTheme } from '../../upload/styles'
 import type { CommonLocale, DateLocale } from '../../locales'
 import type { Hljs } from '../../_hooks'
-import type { GlobalTheme } from './interface'
+import type { GlobalTheme, GlobalThemeOverrides } from './interface'
 
 export interface GlobalIconConfig {
   attach?: () => VNodeChild

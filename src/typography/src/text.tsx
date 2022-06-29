@@ -92,10 +92,6 @@ export default defineComponent({
           {$slots}
         </del>
       )
-    return (
-      <Tag class={textClass} style={cssVars}>
-        {$slots}
-      </Tag>
-    )
+    return h(this.tag, { class: textClass, style: cssVars }, $slots)
   }
 })
