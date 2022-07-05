@@ -23,7 +23,8 @@
       "ESNext",
       "DOM"
     ],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "disableSizeLimit": true
   },
   "include": [
     "src/**/*"

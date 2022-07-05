@@ -29,7 +29,22 @@ export default defineConfig({
     'process.env.NODE_ENV': `'${env}'`
   },
   optimizeDeps: {
-    include: ['async-validator', 'lodash-es', 'vue-router'],
+    include: [
+      '@css-render/plugin-bem',
+      'css-render',
+      '@css-render/vue3-ssr',
+      'date-fns/esm',
+      // 'evtd',
+      'highlight.js',
+      'async-validator',
+      'lodash-es',
+      'seemly',
+      'vue-router',
+      // 'vdirs',
+      'vooks',
+      'vue',
+      'vueuc'
+    ],
     exclude: ['__INDEX__']
   },
   build: {

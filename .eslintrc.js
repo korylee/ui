@@ -41,7 +41,7 @@ module.exports = defineConfig({
       parserOptions: {
         project: './tsconfig.json',
         ecmaFeatures: {
-          jsx: Fue
+          jsx: true
         }
       },
       rules: {

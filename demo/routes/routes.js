@@ -8,9 +8,7 @@ const zhComponents = import.meta.glob(
 
 const getRoutes = (list, reg) =>
   Object.keys(list).map((path) => {
-    const name = path.match(
-      /\.\.\/\.\.\/src\/(.*)\/demos\/zhCN\/index\.demo-entry\.md$/
-    )?.[1]
+    const name = path.match(reg)?.[1]
     return {
       name,
       path: name?.toLowerCase(),
@@ -20,11 +18,11 @@ const getRoutes = (list, reg) =>
 
 const zhDocRoutes = getRoutes(
   zhDocs,
-  /\.\.\/\.\.\/src\/(.*)\/docs\/zhCN\/index\.demo-entry\.md$/
+  /^\.\.\/\.\.\/src\/(.*)\/docs\/zhCN\/index\.demo-entry\.md$/
 )
 const zhComponentRoutes = getRoutes(
   zhComponents,
-  /\.\.\/\.\.\/src\/(.*)\/demos\/zhCN\/index\.demo-entry\.md$/
+  /^\.\.\/\.\.\/src\/(.*)\/demos\/zhCN\/index\.demo-entry\.md$/
 )
 
 const LAYOUT = () => import('../pages/Layout.vue')

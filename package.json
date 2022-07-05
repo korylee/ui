@@ -2,12 +2,25 @@
   "name": "ui",
   "private": true,
   "version": "0.0.1-alpha.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "unpkg": "dist/index.js",
+  "jsdelivr": "dist/index.js",
+  "files": [
+    "es",
+    "lib",
+    "dist",
+    "volar.d.ts",
+    "README.md"
+  ],
   "scripts": {
     "dev": "pnpm run clean && cross-env NODE_ENV=development vite",
-    "build:site": "vue-tsc --noEmit && vite build",
-    "build:package": "pnpm run gen-version && pnpm run clean && pnpm run gen-volar-dts && tsc -b --force tsconfig.esm.json && rollup -c",
+    "build:site": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=4096 vite build",
+    "build:package": "pnpm run gen-version && pnpm run clean && pnpm run gen-volar-dts && tsc -b --force tsconfig.esm.json && tsc -b --force tsconfig.cjs.json && rollup -c",
     "clean": "rimraf site lib es node_modules/naive-ui themes/**/es themes/**/lib",
-    "clean:lib": "rimraf node_modules",
+    "clean:lib": "npx rimraf node_modules",
+    "reinstall": "pnpm clean:lib && pnpm i",
     "lint:code": "eslint \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
     "lint:fix": "eslint --fix \"{src,build,scripts,demo}/**/*.{ts,tsx,js,vue,md}\"",
     "preview": "vite preview",
@@ -63,8 +76,8 @@
     "rollup-plugin-esbuild": "^4.9.1",
     "typescript": "^4.7.4",
     "vfonts": "^0.1.0",
-    "vite": "3.0.0-beta.5",
-    "vitest": "^0.16.0",
+    "vite": "3.0.0-beta.6",
+    "vitest": "^0.17.0",
     "vue": "^3.2.37",
     "vue-router": "^4.0.15",
     "vue-tsc": "^0.38.2"
@@ -89,7 +102,8 @@
   "keywords": [
     "component library",
     "ui",
-    "vue"
+    "vue",
+    "ui framework"
   ],
   "pnpm": {
     "peerDependencyRules": {

@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import { createWebHistory } from 'vue-router'
-import { createRouter, useRoute } from 'vue-router'
+import { createRouter } from 'vue-router'
 import routes from './routes'
 
 const loadingBarApiRef = {}
